@@ -1,0 +1,37 @@
+{
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "rules": {
+        "no-prototype-builtins": "warn",
+        "indent": [
+            "off",
+            4
+        ],
+        "linebreak-style": [
+            "off",
+            "unix"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-unused-vars": [
+            "off",
+            {
+                "vars": "local"
+            }
+        ],
+        "no-console": ["off"]
+    },
+    "globals": {
+        "gracefulShutdown": "readonly",
+        "_language": "writable"
+    }
+}
