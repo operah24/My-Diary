@@ -1,4 +1,8 @@
 {
     "USER_ALREADY_REGISTERED":"User already registered",
-    "ERROR_OCCURED_WHILE_REGISTERING_USER": "Error occurred while registering user"
+    "ERROR_OCCURED_WHILE_REGISTERING_USER": "Error occurred while registering user",
+    "SUCCESSFULLY_REGISTERED": "User Successfully registered",
+    "EMAIL_OR_PASSWORD_DOES_NOT_EXIST": "Email or password does not exist, please register",
+    "USER_LOGIN_SUCCESSFULLY": "User login successfully",
+    "ERROR_OCCURED_WHILE_LOGING_IN_USER": "Error occurred while login"
 }
