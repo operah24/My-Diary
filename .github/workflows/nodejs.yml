@@ -39,7 +39,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { context, github } = require('@actions/github');
             const issueNumber = context.payload.pull_request ? context.payload.pull_request.number : null;
             if (issueNumber) {
               await github.issues.createComment({
