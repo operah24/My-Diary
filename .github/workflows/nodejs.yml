@@ -3,8 +3,6 @@ name: Node.js CI
 on: 
   push:
     branches: [master]
-  pull_request:
-    branches: [master]
 
 jobs:
   build:
@@ -26,22 +24,5 @@ jobs:
 
       - name: Lint Code
         run: npm run lint
-    
-  notify:
-    runs-on: ubuntu-latest
-    needs: build
-    if: failure()
-    steps:
-      - name: Send failure notification
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { context, github } = require('@actions/github');
-            const issueNumber = context.payload.pull_request ? context.payload.pull_request.number : null;
-            if (issueNumber) {
-              await github.issues.createComment({
-                ...context.repo,
-                issue_number: issueNumber,
-                body: 'The CI pipeline has failed. Please check the logs for details.'
-              });
-            }
+
+
