@@ -29,15 +29,18 @@ jobs:
       
       - name: Run Node test
         id: test
+        continue-on-error: true
         run: npm test
 
       - name: Build (if present)
         id: build
+        continue-on-error: true
         run: npm run build
       
       - name: Archive artifacts
         id: artifact
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: build-artifact
           path: dist
@@ -55,6 +58,11 @@ jobs:
             const body = `**Welcome**, new contributor!
 
             *Pusher: @${{github.actor}}, workflow: ${{github.workflow}}
+            #### Lint \`${{steps.lint.outcome}}\`
+            #### test \`${{steps.test.outcome}}\`
+            #### build \`${{steps.build.outcome}}\`
+            #### artifact \`${{steps.artifact.outcome}}\`
+
 
             Please make sure you've read our [contributing guide](CONTRIBUTING.md) and we look forward to reviewing your Pull request shortly ✨`
             await github.rest.issues.createComment({
