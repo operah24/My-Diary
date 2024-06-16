@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "@shypes/language-translator": "^2.0.15",
-    "babel": "^6.23.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "debug": "^4.3.4",
