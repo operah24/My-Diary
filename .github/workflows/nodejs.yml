@@ -51,10 +51,10 @@ jobs:
           script: |
             console.log(context.issue.number)
             console.log(context.issue)
-            console.log({{ steps.lint}})
-            console.log({{ steps.test}})
-            console.log({{ steps.build}})
-            console.log({{ steps.artifact}})
+            console.log(${{ steps.lint}})
+            console.log(${{ steps.test}})
+            console.log(${{ steps.build}})
+            console.log(${{ steps.artifact}})
             const body = `**Welcome**, new contributor!
 
             *Pusher: @${{github.actor}}, workflow: ${{github.workflow}}
