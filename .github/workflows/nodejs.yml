@@ -40,7 +40,7 @@ jobs:
       - name: Build (if present)
         id: build
         continue-on-error: true
-        run: npm run build
+        run: npm build
       
       - name: Archive artifacts
         id: artifact
