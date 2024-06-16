@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon --inspect ./bin/www --exec \"npm run lint && node \"",
     "lint": "eslint .",
-    "test": "echo 'Testing'"
+    "test": "echo 'Testing'",
+    "build": "node build"
 
   },
   "keywords": [],
