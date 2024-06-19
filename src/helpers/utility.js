@@ -11,7 +11,7 @@ const sendSuccessResponse = async (res, content, message)  => {
         responseData['message'] = message;
         message = {};
     }
-    responseData = {...responseData, ...message};
+    responseData = Object.assign({},responseData, message);
     let translated = await Language.get(responseData['message'], res.language, responseData['param']);
     const langKey = !(res.langKey == "true" || res.langKey == "1") ? false : true;
     const responseKey = {
@@ -34,7 +34,7 @@ const sendErrorResponse = async (res, content, message, status) => {
         responseData['message'] = message;
         message = {};
     }
-    responseData = {...responseData, ...message};
+    responseData = Object.assign({},responseData, message);
     let translated;
     if(responseData['message'] == 'MISSING_REQUIRED_FIELDS') {
         const msgStrings = [];

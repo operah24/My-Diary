@@ -1,15 +1,24 @@
 name: Node.js CI
 
 on: 
-  push:
+  pull_request:
     branches: [master]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+
 
     steps: 
       - uses: actions/checkout@v4
+      
+      - run: |
+          ls
+          git log
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -17,12 +26,61 @@ jobs:
           node-version: '18.19.0'
 
       - name: Install Node Dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install --only=dev
+      
+      - name: Lint Code
+        id: lint
+        run: npm run lint
+      
+      - name: Run Node test
+        id: test
+        continue-on-error: true
+        run: npm test
 
       - name: Build (if present)
-        run: npm run build --if-present
+        id: build
+        continue-on-error: true
+        run: npm run build
+      
+      - name: Archive artifacts
+        id: artifact
+        uses: actions/upload-artifact@v4
+        continue-on-error: true
+        with:
+          name: build-artifact
+          path: dist
 
-      - name: Lint Code
-        run: npm run lint
+      - name: update Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log(context.issue.number)
+            console.log(context.issue)
+            console.log(${{ steps.lint}})
+            console.log(${{ steps.test}})
+            console.log(${{ steps.build}})
+            console.log(${{ steps.artifact}})
+            const body = `**Welcome**, new contributor!
+
+            *Pusher: @${{github.actor}}, workflow: ${{github.workflow}}
+            #### Lint \`${{steps.lint.outcome}}\`
+            #### test \`${{steps.test.outcome}}\`
+            #### build \`${{steps.build.outcome}}\`
+            #### artifact \`${{steps.artifact.outcome}}\`
+
+
+            Please make sure you've read our [contributing guide](CONTRIBUTING.md) and we look forward to reviewing your Pull request shortly ✨`
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number, //PR ID 
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            })
+
+      
+
+
 
 
