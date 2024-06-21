@@ -50,7 +50,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: 'Test Failure',
-              labels: ['testing-failure']
+              labels: ['testing-failure'],
               body: body
             })
 
