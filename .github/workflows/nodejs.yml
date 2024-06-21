@@ -164,8 +164,8 @@ jobs:
                 labels: ['testing-failure'],
                 body: body
               })
-            } else{
-              await existingIssue.update({
+            } else {
+              await github.rest.issues.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 body: body,
