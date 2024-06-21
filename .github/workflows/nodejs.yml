@@ -41,7 +41,7 @@ jobs:
         run: npm test
       
       - name: Check Test Failure
-        if: ${{ failure() && steps.test.outcome == 'failure' }}
+        if: ${{ steps.test.outcome == 'failure' }}
         uses: actions/github-script@v7
         with:
           script: |
