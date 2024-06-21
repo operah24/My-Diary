@@ -96,21 +96,33 @@ jobs:
         run: npm run build
 
       - name: Check Build Failure
-        if: ${{ steps.test.outcome == 'failure' }}
+        if: ${{ steps.build.outcome == 'failure' }}
         uses: actions/github-script@v7
         with:
           script: |
-            const body = `Build failed in workflow: ${{ github.workflow }} for commit: ${{ github.sha }}`
-            await github.rest.issues.create({
+            const body = `Build failed in workflow: ${{ github.workflow }}`
+            const label = 'build-failure';
+            const { data: issues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: 'Build Failure',
-              labels: ['build-failure'],
-              body: body
-            })
+              state: 'open',
+              labels: label
+            });
+
+            const existingIssue = issues.find(issue => issue.title === 'Build Failure');
+
+            if(!existingIssue){
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'Build Failure',
+                labels: ['build-failure'],
+                body: body
+              })
+            }
 
       - name: Close Build Issue
-        if: ${{ steps.test.outcome == 'success' }}
+        if: ${{ steps.build.outcome == 'success' }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -119,7 +131,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              labels: 'build-failure',
+              labels: label
             });
 
 
