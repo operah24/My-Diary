@@ -164,6 +164,12 @@ jobs:
                 labels: ['testing-failure'],
                 body: body
               })
+            } else{
+              await github.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body,
+              });
             }
 
       - name: Close Test Issue
