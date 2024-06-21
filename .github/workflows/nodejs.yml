@@ -11,6 +11,7 @@ jobs:
       contents: write
       pull-requests: write
       repository-projects: write
+      issues: write
 
 
     steps: 
@@ -38,6 +39,19 @@ jobs:
         id: test
         continue-on-error: true
         run: npm test
+      
+      - name: Check Test Failure
+        if: ${{ failure() && steps.test.outcome == 'failure' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `Tests failed in workflow: ${{ github.workflow }} for commit: ${{ github.sha }}`
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Test Failure',
+              body: body
+            })
 
       - name: Build (if present)
         id: build
