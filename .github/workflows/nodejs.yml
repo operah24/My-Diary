@@ -58,7 +58,7 @@ jobs:
             const existingIssue = issues.find(issue => issue.title === 'Test Failure');
 
             if(!existingIssue){
-                await github.rest.issues.create({
+              await github.rest.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title: 'Test Failure',
