@@ -63,7 +63,7 @@ jobs:
                 repo: context.repo.repo,
                 title: 'Test Failure',
                 labels: ['testing-failure'],
-                body: body,
+                body: body
                 # assignees: assignees
               })
             }
