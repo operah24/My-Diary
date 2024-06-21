@@ -47,7 +47,7 @@ jobs:
           script: |
             const body = `Test failed in workflow: ${{ github.workflow }}`;
             const label = 'testing-failure';
-            const assignees = ${{ github.actor }};
+            const assignees = [${{ github.actor }}];
             console.log(assignees)
             const { data: issues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
