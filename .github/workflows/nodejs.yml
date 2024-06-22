@@ -153,8 +153,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              labels: label,
-              assignees: assignees
+              labels: label
             });
             const existingIssue = issues.find(issue => issue.title === 'Test Failure');
 
@@ -164,7 +163,8 @@ jobs:
                 repo: context.repo.repo,
                 title: 'Test Failure',
                 labels: ['testing-failure'],
-                body: body
+                body: body,
+                assignees: assignees
               })
             }
 
