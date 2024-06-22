@@ -176,7 +176,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              labels: label',
+              labels: label,
             });
 
 
