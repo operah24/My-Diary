@@ -11,7 +11,7 @@ jobs:
       contents: write
       pull-requests: write
       repository-projects: write
-      issues: write|read
+      issues: write
 
 
     steps: 
