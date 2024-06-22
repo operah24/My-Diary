@@ -143,7 +143,7 @@ jobs:
       
       - name: Check Test Failure
         if: ${{ steps.test.outcome == 'failure' }}
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const body = `Test failed in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`;
@@ -164,12 +164,6 @@ jobs:
                 labels: ['testing-failure'],
                 body: body
               })
-            } else {
-              await github.rest.issues.update({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: body,
-              });
             }
 
       - name: Close Test Issue
