@@ -148,11 +148,13 @@ jobs:
           script: |
             const body = `Test failed in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`;
             const label = 'testing-failure';
+            const assignees = [context.actor];
             const { data: issues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              labels: label
+              labels: label,
+              assignees: assignees
             });
             const existingIssue = issues.find(issue => issue.title === 'Test Failure');
 
