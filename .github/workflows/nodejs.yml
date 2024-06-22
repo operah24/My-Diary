@@ -39,6 +39,7 @@ jobs:
           script: |
             const body = `Install Node failed in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`;
             const label = 'install-node-failure';
+            const assignees = [context.actor];
             const { data: issues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -53,7 +54,8 @@ jobs:
                 repo: context.repo.repo,
                 title: 'Install Node Failure',
                 labels: ['install-node-failure'],
-                body: body
+                body: body,
+                assignees: assignees
               })
             }
 
@@ -93,6 +95,7 @@ jobs:
           script: |
             const body = `Lint failed in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`;
             const label = 'lint-failure';
+            const assignees = [context.actor];
             const { data: issues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -107,7 +110,8 @@ jobs:
                 repo: context.repo.repo,
                 title: 'Lint Failure',
                 labels: ['lint-failure'],
-                body: body
+                body: body,
+                assignees: assignees
               })
             }
 
@@ -205,6 +209,7 @@ jobs:
           script: |
             const body = `Build failed in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`
             const label = 'build-failure';
+            const assignees = [context.actor];
             const { data: issues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -220,7 +225,8 @@ jobs:
                 repo: context.repo.repo,
                 title: 'Build Failure',
                 labels: ['build-failure'],
-                body: body
+                body: body,
+                assignees: assignees
               })
             }
 
@@ -264,6 +270,7 @@ jobs:
           script: |
             const body = `Artifact failed in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`
             const label = 'artifact-failure';
+            const assignees = [context.actor];
             const { data: issues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -279,7 +286,8 @@ jobs:
                 repo: context.repo.repo,
                 title: 'Artifact Failure',
                 labels: ['artifact-failure'],
-                body: body
+                body: body,
+                assignees: assignees
               })
             }
 
