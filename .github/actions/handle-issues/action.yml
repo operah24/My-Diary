@@ -52,6 +52,7 @@ runs:
           if: ${{ inputs.outcome == 'success' }}
           uses: actions/github-script@v6
           with:
+            github-token: ${{github.token}}
             script: |
                 const { data: issues } = await github.rest.issues.listForRepo({
                     owner: context.repo.owner,
