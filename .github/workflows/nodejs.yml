@@ -34,7 +34,7 @@ jobs:
           npm install --only=dev
       
       - name: Handle Issue for Install Node Dependencies
-        uses: operah24/My-Diary/.github/workflows/handle-issues@workshop-3
+        uses: operah24/My-Diary/.github/actions/handle-issues@workshop-3
         with:
           outcome: ${{ steps.install-node.outcome}}
           label: 'install-node-failure'
@@ -46,7 +46,7 @@ jobs:
         run: npm run lint
 
       - name: Handle Issue for Lint Failure
-        uses: operah24/My-Diary/.github/workflows/handle-issues@workshop-3
+        uses: operah24/My-Diary/.github/actions/handle-issues@workshop-3
         with:
           outcome: ${{ steps.lint.outcome}}
           label: 'lint-failure'
@@ -58,7 +58,7 @@ jobs:
         run: npm test
       
       - name: Handle Issue for Testing Failure
-        uses: operah24/My-Diary/.github/workflows/handle-issues@workshop-3
+        uses: operah24/My-Diary/.github/actions/handle-issues@workshop-3
         with:
           outcome: ${{ steps.test.outcome}}
           label: 'testing-failure'
@@ -70,7 +70,7 @@ jobs:
         run: npm run build
       
       - name: Handle Issue for Build Failure
-        uses: operah24/My-Diary/.github/workflows/handle-issues@workshop-3
+        uses: operah24/My-Diary/.github/actions/handle-issues@workshop-3
         with:
           outcome: ${{ steps.build.outcome}}
           label: 'build-failure'
@@ -85,7 +85,7 @@ jobs:
           path: dist
       
       - name: Handle Issue for Artifact Failure
-        uses: operah24/My-Diary/.github/workflows/handle-issues@workshop-3
+        uses: operah24/My-Diary/.github/actions/handle-issues@workshop-3
         with:
           outcome: ${{ steps.build.outcome}}
           label: 'artifact-failure'
