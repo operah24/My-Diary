@@ -11,6 +11,7 @@ jobs:
       contents: write
       pull-requests: write
       repository-projects: write
+      issues: write
 
 
     steps: 
@@ -23,27 +24,58 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.19.0'
+          node-version: '20'
 
       - name: Install Node Dependencies
+        id: install-node
+        continue-on-error: true
         run: |
           npm install
           npm install --only=dev
       
+      - name: Handle Issue for Install Node Dependencies
+        uses: operah24/My-Diary/.github/actions/handle-issues@workshop-3
+        with:
+          outcome: ${{ steps.install-node.outcome}}
+          label: 'install-node-failure'
+          title: 'Install Node Failure'
+
       - name: Lint Code
         id: lint
+        continue-on-error: true
         run: npm run lint
-      
+
+      - name: Handle Issue for Lint Failure
+        uses: operah24/My-Diary/.github/actions/handle-issues@workshop-3
+        with:
+          outcome: "${{ steps.lint.outcome}}"
+          label: 'lint-failure'
+          title: 'Lint Failure'
+
       - name: Run Node test
         id: test
         continue-on-error: true
         run: npm test
+      
+      - name: Handle Issue for Testing Failure
+        uses: operah24/My-Diary/.github/actions/handle-issues@workshop-3
+        with:
+          outcome: ${{ steps.test.outcome}}
+          label: 'testing-failure'
+          title: 'Testing Failure'
 
       - name: Build (if present)
         id: build
         continue-on-error: true
         run: npm run build
       
+      - name: Handle Issue for Build Failure
+        uses: operah24/My-Diary/.github/actions/handle-issues@workshop-3
+        with:
+          outcome: ${{ steps.build.outcome}}
+          label: 'build-failure'
+          title: 'Build Failure'
+
       - name: Archive artifacts
         id: artifact
         uses: actions/upload-artifact@v4
@@ -51,6 +83,13 @@ jobs:
         with:
           name: build-artifact
           path: dist
+      
+      - name: Handle Issue for Artifact Failure
+        uses: operah24/My-Diary/.github/actions/handle-issues@workshop-3
+        with:
+          outcome: ${{ steps.artifact.outcome}}
+          label: 'artifact-failure'
+          title: 'Artifact Failure'
 
       - name: update Comment on PR
         uses: actions/github-script@v7
