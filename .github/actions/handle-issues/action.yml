@@ -55,17 +55,4 @@ runs:
             github-token: ${{github.token}}
             script: |
                 console.log("load....")
-                # const { data: issues } = await github.rest.issues.listForRepo({
-                #     owner: context.repo.owner,
-                #     repo: context.repo.repo,
-                #     state: 'open',
-                #     labels: ${{inputs.label}},
-                # });
-                # for (const issue of issues) {
-                #     await github.rest.issues.update({
-                #         owner: context.repo.owner,
-                #         repo: context.repo.repo,
-                #         issue_number: issue.number,
-                #         state: 'closed'
-                #     });
-                # }
+                
