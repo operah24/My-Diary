@@ -52,19 +52,19 @@ runs:
           if: ${{ inputs.outcome == 'success' }}
           uses: actions/github-script@v6
           with:
-            github-token: ${{github.token}}
             script: |
-                const { data: issues } = await github.rest.issues.listForRepo({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    state: 'open',
-                    labels: ${{inputs.label}},
-                });
-                for (const issue of issues) {
-                    await github.rest.issues.update({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        issue_number: issue.number,
-                        state: 'closed'
-                    });
-                }
+                console.log("load....")
+                # const { data: issues } = await github.rest.issues.listForRepo({
+                #     owner: context.repo.owner,
+                #     repo: context.repo.repo,
+                #     state: 'open',
+                #     labels: ${{inputs.label}},
+                # });
+                # for (const issue of issues) {
+                #     await github.rest.issues.update({
+                #         owner: context.repo.owner,
+                #         repo: context.repo.repo,
+                #         issue_number: issue.number,
+                #         state: 'closed'
+                #     });
+                # }
