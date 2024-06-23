@@ -1,20 +1,19 @@
 name: Handle Issues
+description: 'Handle Issues'
 
 inputs:
     outcome:
-        type: string
         description: "Result from the Task"
         required: true
     label:
-        type: string
         description: "Issue Label"
         required: true
     title:
-        type: string
         description: "Issue Title"
         required: true
 
 runs:
+    using: "composite"
     steps:
         - name: if task Fail create an issue or comment on the issue
           if: ${{ inputs.outcome == 'failure' }}
