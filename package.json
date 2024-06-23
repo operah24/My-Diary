@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon --inspect ./bin/www --exec \"npm run lint && node \"",
-
+    "lint": "eslint .",
+    "test": "echo 'Testing'",
     "build": "mkdir dist && babel src -s -d dist"
   },
   "keywords": [],
