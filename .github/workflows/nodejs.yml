@@ -48,7 +48,7 @@ jobs:
       - name: Handle Issue for Lint Failure
         uses: operah24/My-Diary/.github/actions/handle-issues@workshop-3
         with:
-          outcome: ${{ steps.lint.outcome}}
+          outcome: "${{ steps.lint.outcome}}"
           label: 'lint-failure'
           title: 'Lint Failure'
 

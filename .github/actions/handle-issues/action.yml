@@ -20,34 +20,7 @@ runs:
           uses: actions/github-script@v6
           with:
             script: |
-                let body = `${{inputs.title}} in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`;
-                const assignees = [context.actor];
-                const { data: issues } = await github.rest.issues.listForRepo({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    state: 'open',
-                    labels: ${{inputs.label}}
-                });
-                const existingIssue = issues.find(issue => issue.title ===  ${{inputs.title}});
-
-                if(!existingIssue){
-                    await github.rest.issues.create({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        title: ${{inputs.title}},
-                        labels: [${{inputs.label}}],
-                        body: body,
-                        assignees: assignees
-                    })
-                } else {
-                    boby = `${{inputs.title}} in workflow: ${{ github.workflow }}, 🤪 👋 Thanks for reporting! Oga ade`;
-                    await github.rest.issues.createComment({
-                        issue_number: issue.number,
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        body: body
-                    })
-                }
+                console.log("failure....")
         - name: close issue when outcome is successfully
           if: ${{ inputs.outcome == 'success' }}
           uses: actions/github-script@v7
