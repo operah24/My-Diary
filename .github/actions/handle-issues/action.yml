@@ -11,9 +11,6 @@ inputs:
     title:
         description: "Issue Title"
         required: true
-    error:
-        description: "Issue Error"
-        required: true
 
 runs:
     using: "composite"
