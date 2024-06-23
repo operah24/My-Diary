@@ -11,6 +11,9 @@ inputs:
     title:
         description: "Issue Title"
         required: true
+    error:
+        description: "Issue Error"
+        required: true
 
 runs:
     using: "composite"
@@ -20,7 +23,7 @@ runs:
           uses: actions/github-script@v6
           with:
             script: |
-                let body = `${{inputs.title}} in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`;
+                let body = `${{inputs.title}} in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it. ${{inputs.error}}`;
                 const assignees = [context.actor];
                 const { data: issues } = await github.rest.issues.listForRepo({
                     owner: context.repo.owner,
@@ -40,7 +43,7 @@ runs:
                         assignees: assignees
                     })
                 } else {
-                    body = `${{inputs.title}} in workflow: ${{ github.workflow }}, 🤪 👋 Thanks for reporting! Oga ade`;
+                    body = `${{inputs.title}} in workflow: ${{ github.workflow }}, 🤪 👋 Thanks for reporting! Oga ade  ${{inputs.error}}`;
                     await github.rest.issues.createComment({
                         issue_number: issue.number,
                         owner: context.repo.owner,

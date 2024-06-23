@@ -63,6 +63,7 @@ jobs:
           outcome: ${{ steps.test.outcome}}
           label: 'testing-failure'
           title: 'Testing Failure'
+          error:  ${{ steps.test.outputs}}
 
       - name: Build (if present)
         id: build
@@ -75,6 +76,7 @@ jobs:
           outcome: ${{ steps.build.outcome}}
           label: 'build-failure'
           title: 'Build Failure'
+          error:  ${{ steps.build.outputs}}
 
       - name: Archive artifacts
         id: artifact
@@ -87,9 +89,10 @@ jobs:
       - name: Handle Issue for Artifact Failure
         uses: operah24/My-Diary/.github/actions/handle-issues@workshop-3
         with:
-          outcome: ${{ steps.build.outcome}}
+          outcome: ${{ steps.artifact.outcome}}
           label: 'artifact-failure'
           title: 'Artifact Failure'
+          error:  ${{ steps.artifact.outputs}}
 
       - name: update Comment on PR
         uses: actions/github-script@v7
