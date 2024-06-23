@@ -26,17 +26,5 @@ runs:
           uses: actions/github-script@v7
           with:
             script: |
-                const { data: issues } = await github.rest.issues.listForRepo({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    state: 'open',
-                    labels: ${{inputs.label}},
-                });
-                for (const issue of issues) {
-                    await github.rest.issues.update({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        issue_number: issue.number,
-                        state: 'closed'
-                    });
-                }
+                console.log(${{ inputs.label}})
+                
