@@ -11,6 +11,7 @@ jobs:
       contents: write
       pull-requests: write
       repository-projects: write
+      issues: write
 
 
     steps: 
@@ -26,23 +27,233 @@ jobs:
           node-version: '18.19.0'
 
       - name: Install Node Dependencies
+        id: install-node
         run: |
           npm install
           npm install --only=dev
+
+      - name: Check Install Node Failure
+        if: ${{ steps.install-node.outcome == 'failure' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `Install Node failed in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`;
+            const label = 'install-node-failure';
+            const assignees = [context.actor];
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: label
+            });
+            const existingIssue = issues.find(issue => issue.title === 'Install Node Failure');
+
+            if(!existingIssue){
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'Install Node Failure',
+                labels: ['install-node-failure'],
+                body: body,
+                assignees: assignees
+              })
+            }
+
+      - name: Close Install Node Issue
+        if: ${{ steps.install-node.outcome == 'success' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const label = 'install-node-failure';
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: label,
+            });
+
+
+            if (issues.length > 0) {
+              for (const issue of issues) {
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+              }
+            }
       
       - name: Lint Code
         id: lint
         run: npm run lint
+
+      - name: Check Lint Failure
+        if: ${{ steps.lint.outcome == 'failure' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `Lint failed in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`;
+            const label = 'lint-failure';
+            const assignees = [context.actor];
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: label
+            });
+            const existingIssue = issues.find(issue => issue.title === 'Lint Failure');
+
+            if(!existingIssue){
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'Lint Failure',
+                labels: ['lint-failure'],
+                body: body,
+                assignees: assignees
+              })
+            }
+
+      - name: Close Lint Issue
+        if: ${{ steps.lint.outcome == 'success' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const label = 'lint-failure';
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: label,
+            });
+
+
+            if (issues.length > 0) {
+              for (const issue of issues) {
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+              }
+            }
       
       - name: Run Node test
         id: test
         continue-on-error: true
         run: npm test
+      
+      - name: Check Test Failure
+        if: ${{ steps.test.outcome == 'failure' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `Test failed in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`;
+            const label = 'testing-failure';
+            const assignees = [context.actor];
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: label
+            });
+            const existingIssue = issues.find(issue => issue.title === 'Test Failure');
+
+            if(!existingIssue){
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'Test Failure',
+                labels: ['testing-failure'],
+                body: body,
+                assignees: assignees
+              })
+            }
+
+      - name: Close Test Issue
+        if: ${{ steps.test.outcome == 'success' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const label = 'testing-failure';
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: label,
+            });
+
+
+            if (issues.length > 0) {
+              for (const issue of issues) {
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+              }
+            }
 
       - name: Build (if present)
         id: build
         continue-on-error: true
         run: npm run build
+
+      - name: Check Build Failure
+        if: ${{ steps.build.outcome == 'failure' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `Build failed in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`
+            const label = 'build-failure';
+            const assignees = [context.actor];
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: label
+            });
+
+            const existingIssue = issues.find(issue => issue.title === 'Build Failure');
+
+            if(!existingIssue){
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'Build Failure',
+                labels: ['build-failure'],
+                body: body,
+                assignees: assignees
+              })
+            }
+
+      - name: Close Build Issue
+        if: ${{ steps.build.outcome == 'success' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const label = 'build-failure';
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: label
+            });
+
+
+            if (issues.length > 0) {
+              for (const issue of issues) {
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+              }
+            }
       
       - name: Archive artifacts
         id: artifact
@@ -51,6 +262,59 @@ jobs:
         with:
           name: build-artifact
           path: dist
+
+      - name: Check Artifact Failure
+        if: ${{ steps.artifact.outcome == 'failure' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `Artifact failed in workflow: ${{ github.workflow }}, Please investigate the failure and resolve it.`
+            const label = 'artifact-failure';
+            const assignees = [context.actor];
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: label
+            });
+
+            const existingIssue = issues.find(issue => issue.title === 'Artifact Failure');
+
+            if(!existingIssue){
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'Artifact Failure',
+                labels: ['artifact-failure'],
+                body: body,
+                assignees: assignees
+              })
+            }
+
+      - name: Close Artifact Issue
+        if: ${{ steps.artifact.outcome == 'success' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const label = 'artifact-failure';
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: label
+            });
+
+
+            if (issues.length > 0) {
+              for (const issue of issues) {
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+              }
+            }
 
       - name: update Comment on PR
         uses: actions/github-script@v7
