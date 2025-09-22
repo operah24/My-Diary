@@ -33,7 +33,9 @@ exports.userLogin = async (req, res) => {
         
         const token = sign(
             {
-                id: foundUser._id,
+                id: foundUser.data._id,
+                email: foundUser.data.email,
+                userName: foundUser.data.userName
             },
             "ESTHER",
             { expiresIn: "24h" }
@@ -52,4 +54,8 @@ exports.userLogin = async (req, res) => {
         console.log(error);
         return sendErrorResponse(res, error, "ERROR_OCCURED_WHILE_LOGING_IN_USER");
     }
+};
+
+exports.isUser = async (req, res) => {
+    res.status(200).send("Welcome 🙌 ");
 };

@@ -14,13 +14,7 @@ let UserSchema = new Schema({
     password:{
         type: String,
         required: true
-    },
-    Diaries: [
-        {
-            type: mongoose.Types.ObjectId,
-            ref: "diary"
-        }
-    ]
+    }
 });
 
 const UserModel = mongoose.model("user", UserSchema);

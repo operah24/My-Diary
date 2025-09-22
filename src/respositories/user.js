@@ -10,40 +10,50 @@ const findOneByParam =  async(matchParam) => {
     };
 };
 
+
+
+
+
 const registerNewUser = async (payload) => {
-    let newUser = await new UserModel();
-    newUser.email = payload.email;
-    newUser.password = payload.password;
-    newUser.userName = payload.userName;
+    try {
+        // Create a new user instance
+        let newUser = new UserModel();
+        newUser.email = payload.email;
+        newUser.password = payload.password;
+        newUser.userName = payload.userName;
 
-   
-    const salt = await bcrypt.genSalt(10);
-    newUser.password = await bcrypt.hash(newUser.password, salt);
-    // encryptedPassword = await bcrypt.hash(password, 10);
-    const user = await newUser.save();
+        // Hash the password before saving it
+        const salt = await bcrypt.genSalt(10);
+        newUser.password = await bcrypt.hash(newUser.password, salt);
 
-    // const token = jwt.sign(
-    //   { user_id: user._id, email },
-    //   process.env.TOKEN_KEY,
-    //   {
-    //     expiresIn: "2h",
-    //   }
-    // );
+        // Save the user to the database
+        const user = await newUser.save();
 
-    const token = sign(
-      {
-        id: user._id,
-      },
-      "ESTHER",
-      { expiresIn: "24h" }
-    );
-    return{
-        error: false,
-        token,
-        user
-        
-    };
+        // Generate a token with user details
+        const token = sign(
+            {
+                id: user._id,
+                email: user.email,
+                userName: user.userName
+            },
+            "ESTHER",
+            { expiresIn: "24h" }
+        );
 
+        // Return the token and user information
+        return {
+            error: false,
+            token,
+            user
+        };
+    } catch (error) {
+        console.error('Error registering new user:', error);
+        return {
+            error: true,
+            message: 'Error registering new user'
+        };
+    }
 };
+
 
 module.exports = {findOneByParam, registerNewUser};
